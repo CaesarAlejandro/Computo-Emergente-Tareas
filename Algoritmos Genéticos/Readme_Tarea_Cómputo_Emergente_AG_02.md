@@ -1,15 +1,7 @@
-# Tarea 01 — Algoritmo Genético Simple (AGS)
+# Tarea 02 — Algoritmo Genético Simple (AGS)
 
 ## Información general
 
-| Campo | Detalle |
-|-------|---------|
-| **Curso** | Introducción a la Computación Emergente |
-| **Institución** | Universidad Central de Venezuela — Escuela de Física |
-| **Profesor** | Esteban Álvarez |
-| **Archivo** | `tarea01_AG.ipynb` |
-| **Lenguaje** | Python 3.12 |
-| **Librería principal** | PyGAD 3.7 |
 
 ---
 
