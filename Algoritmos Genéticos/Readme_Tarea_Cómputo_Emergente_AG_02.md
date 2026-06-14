@@ -1,9 +1,4 @@
-# Documentación Técnica — Algoritmo Genético Simple (AGS)
-
-> **Archivo fuente:** `Tarea_Cómputo_Emergente_AG_02.ipynb`
-> **Lenguaje:** Python 3 (Jupyter Notebook / Google Colab)
-> **Biblioteca principal:** PyGAD 3.7.0
-> **Fecha de generación:** 2026-06-15
+# Documentación Técnica — Tarea 02
 
 ---
 
