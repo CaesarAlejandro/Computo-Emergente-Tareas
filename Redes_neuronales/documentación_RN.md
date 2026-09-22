@@ -96,7 +96,7 @@ Al iterar la función sobre la lista de patrones, el algoritmo procesa la aritm�
 
 El resultado confirma el principio del modelo: las funciones lógicas se pueden describir mediante combinaciones de estas neuronas binarias básicas.
 
-** (2) Perceptrón Simple (Algoritmo Perceptrónico)**
+**(2) Perceptrón Simple (Algoritmo Perceptrónico)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa una red unicapa con aprendizaje supervisado, orientada específicamente a la resolución de problemas linealmente separables. El ciclo inicia estableciendo los pesos sinápticos en cero y definiendo una razón de aprendizaje constante de $\alpha = 0.5$. Por cada patrón de entrenamiento, la red calcula la suma ponderada de las entradas y la evalúa mediante una función de activación bipolar antisimétrica, la cual produce un 1 para valores positivos, -1 para negativos, o 0 (punto de indeterminación) si el valor es exactamente cero. Si la salida calculada por la red ($y$) no coincide con la salida deseada ($d$), se activa un mecanismo de corrección que adapta las sinapsis sumando al peso actual una fracción proporcional al error y a la entrada: $W_{ji}(n+1) = W_{ji}(n) + \alpha \cdot d \cdot x_i(n)$. El bucle de entrenamiento se detiene automáticamente en el momento en que los pesos logran procesar la totalidad del conjunto de datos sin cometer errores en una misma época.
@@ -115,7 +115,7 @@ Al ejecutar este código, el perceptrón detecta los errores iniciales y modific
 * Entrada: `[1, -1]` -> Salida de la red: **-1**
 * Entrada: `[1, 1]` -> Salida de la red: **1**
 
-** (3) ADALINE (Adaptive Linear Neuron)**
+**(3) ADALINE (Adaptive Linear Neuron)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa una red neuronal de tipo ADALINE, una estructura propuesta por Widrow y Hoff que funciona como un combinador lineal adaptativo. A diferencia del perceptrón simple, el aprendizaje en la red ADALINE utiliza la salida real continua calculada por la red, sin pasarla previamente por una función umbral o escalón. Los pesos sinápticos se inicializan de manera aleatoria con valores entre 0 y 1. Durante las épocas de entrenamiento, el algoritmo calcula el error iterativamente tomando la diferencia directa entre el valor real producido en la salida y la salida esperada ($d - y$). Para minimizar el error cuadrático medio para todos los patrones de aprendizaje, los pesos se actualizan usando la regla Delta, basada en el método del descenso del gradiente. Cada peso se modifica proporcionalmente al error, a la entrada correspondiente y a la tasa de aprendizaje.
@@ -134,7 +134,7 @@ Al ejecutar el código, la medida del error cuadrático medio cae drásticamente
 * Entrada Binaria: `[1, 0, 1]` -> Decimal Esperado: **5** | Predicción Red: **~5.00**
 * Entrada Binaria: `[1, 1, 1]` -> Decimal Esperado: **7** | Predicción Red: **~7.00**
 
-** (4) Perceptrón Multicapa con Retropropagación (Backpropagation)**
+**(4) Perceptrón Multicapa con Retropropagación (Backpropagation)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa un perceptrón multicapa, una arquitectura propuesta originalmente en 1986 para solventar las limitaciones de no linealidad que presentaba el perceptrón simple. La red organiza sus unidades de procesamiento en tres niveles: una capa de entrada (2 variables), una capa oculta intermedia (2 neuronas) y una capa de salida (1 neurona). Para procesar la información, el modelo utiliza una función de activación sigmoidal $f(x) = \frac{1}{1+e^{-x}}$, la cual es estrictamente derivable y proporciona una salida en el intervalo continuo de $[0, +1]$.
@@ -155,7 +155,7 @@ Al ejecutar este bucle iterativo, se observa cómo el parámetro del error total
 * Entrada: `[1, 0]` -> Esperado: **1** | Red: **~0.981** *(Clase: 1)*
 * Entrada: `[1, 1]` -> Esperado: **0** | Red: **~0.023** *(Clase: 0)*
 
-* ** (5) Red de Hopfield (Memoria Asociativa)**
+**(5) Red de Hopfield (Memoria Asociativa)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa una Red de Hopfield, la cual está clasificada como un modelo de red neuronal con entrada binaria y aprendizaje supervisado. Este modelo funciona como una memoria asociativa, almacenando la información (el patrón) físicamente en el patrón de pesos de las interconexiones. Para el entrenamiento, el código emplea la regla de aprendizaje de Hebb, cuya base biológica establece que si dos neuronas a ambos lados de la sinapsis están activas (o inactivas) simultáneamente, la sinapsis se refuerza; de lo contrario, se debilita. Matemáticamente, esto se codifica multiplicando los estados de los elementos del patrón (`patron_original[i] * patron_original[j]`), lo que resulta en un valor positivo (refuerzo) si ambos son iguales, o negativo (debilitamiento) si son distintos, manteniendo la diagonal de la matriz en cero para evitar auto-conexiones. En la fase de recuperación, el algoritmo procesa iterativamente un nuevo patrón calculando la suma ponderada de sus conexiones y aplicando una función de activación tipo escalón hasta que los estados de todas las neuronas se estabilicen (es decir, cuando no existan más cambios en una iteración completa).
@@ -180,7 +180,7 @@ Durante el entrenamiento, el algoritmo genera una matriz de pesos simétrica que
 
 El resultado demuestra la propiedad de tolerancia a fallas de estas redes y su capacidad para restaurar patrones contaminados.
 
-** (6) Algoritmo de Clustering (K-medio)**
+**(6) Algoritmo de Clustering (K-medio)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa el agrupamiento K-medio (K-Means), el cual está clasificado como un modelo de red neuronal con entrada continua y aprendizaje no-supervisado. A diferencia de los modelos anteriores, a esta red no se le proporciona ninguna información relacionada con la clase correcta durante el entrenamiento. En su lugar, el algoritmo funciona como un vector para formar clústeres (agrupaciones). El proceso comienza inicializando `K = 2` centroides arbitrarios. En cada época, el código calcula la distancia euclidiana entre cada punto de datos y los centroides, asignando cada punto al centroide más cercano. Una vez asignados, se recalcula la posición de cada centroide obteniendo el promedio matemático de las coordenadas $x$ e $y$ de los puntos de su grupo. El bucle iterativo se detiene cuando los centroides dejan de moverse de una época a otra (convergencia).
@@ -206,7 +206,7 @@ Al ejecutar este código, el algoritmo logra separar y organizar los datos exito
 
 El modelo demuestra exitosamente la capacidad de auto-organizar la información sin requerir un "profesor" que le indique de antemano a qué clase pertenecía cada punto.
 
-** (7) Clasificador de K-vecinos más cercano (KNN)**
+**(7) Clasificador de K-vecinos más cercano (KNN)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa el método de los K-vecinos más cercanos, clasificado en la teoría neuronal como una red de aprendizaje supervisado diseñada para procesar patrones de entrada continua. A diferencia de los modelos que ajustan pesos sinápticos iterativamente, este algoritmo basa su "conocimiento" en la retención total de los datos de entrenamiento. La función `distancia_euclidiana` calcula la separación espacial en línea recta entre dos vectores. Cuando se introduce un nuevo patrón a través de la función `predecir_knn`, el código mide la distancia exacta desde este nuevo punto hacia todos los puntos almacenados en la memoria. Posteriormente, ordena estas distancias de menor a mayor, selecciona los `k` puntos más cercanos (en este caso, 3) y realiza una votación mayoritaria (`conteo_clases`) para determinar la clase ganadora.
@@ -247,7 +247,7 @@ Al evaluar el código con los puntos de prueba, el algoritmo rastrea, ordena y e
 
 En el tercer caso, aunque el punto está en el centro, la cercanía milimétrica de dos de los puntos más extremos de la Clase A supera la influencia del único punto cercano de la Clase B, dándole la victoria por 2 votos contra 1.
 
-** (8) Mapas de Kohonen (SOM - Self-Organizing Maps)**
+**(8) Mapas de Kohonen (SOM - Self-Organizing Maps)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa un Mapa de Kohonen, clasificado estructuralmente como un modelo de red neuronal de entrada continua entrenado sin supervisión. La arquitectura define una capa de tres neuronas, cada una con un vector de pesos de tres dimensiones inicializado aleatoriamente con valores entre 0 y 1. El proceso de aprendizaje se basa en un paradigma competitivo: al presentar un patrón de entrada, la red calcula la distancia euclidiana entre dicho patrón y los pesos de todas las neuronas. La neurona con la menor distancia resulta "ganadora" (`indice_ganadora`). En la fase de adaptación, únicamente los pesos de la neurona ganadora se modifican, desplazándose geométricamente hacia el vector de entrada en una proporción dictada por la `tasa_aprendizaje`. Para garantizar la estabilidad y convergencia del modelo, la tasa de aprendizaje decae exponencialmente (`*= 0.95`) al final de cada época, simulando la cristalización del mapa topológico.
@@ -279,7 +279,7 @@ Al ejecutar este código, las neuronas se desplazan rápidamente desde sus posic
 
 El algoritmo descubre con éxito las tres agrupaciones subyacentes, auto-organizando sus parámetros internos exclusivamente a partir de la geometría de los datos proporcionados.
 
-** (9) Red de Hamming**
+**(9) Red de Hamming**
 
 **Explicación del Código Fuente**
 El algoritmo implementa una Red de Hamming, la cual se encuentra clasificada como un modelo de red neuronal con entrada binaria y aprendizaje supervisado para patrones fijos. A diferencia de los perceptrones iterativos, los pesos sinápticos de esta red no se descubren mediante descenso del gradiente, sino que se configuran analíticamente desde el inicio: cada peso se establece como el valor del elemento correspondiente en el patrón prototipo dividido por 2. El sesgo (bias) de todas las neuronas se fija como la mitad de la dimensión total del patrón. Durante la función de predicción, la red efectúa una suma ponderada (el producto punto entre los pesos y la entrada, más el sesgo), lo cual matemáticamente equivale a calcular cuántos bits coinciden entre la entrada y el patrón almacenado. Posteriormente, una capa competitiva (simulada en el código con la función `max()`, que hace las veces de la sub-red MAXNET en hardware neuronal) determina la neurona con la mayor activación, inhibiendo al resto y declarando a la ganadora.
@@ -301,7 +301,7 @@ La ejecución del código refleja exactamente el cálculo de proximidad lógica 
 * **El clasificador de Hamming determinó que el patrón pertenece a la:** **Clase A**
 
 
-** (10) Matriz Memoria Asociativa (Willshaw, 1969)**
+**(10) Matriz Memoria Asociativa (Willshaw, 1969)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa la Matriz de Memoria Asociativa, referenciada históricamente como uno de los modelos iniciales de computación neuronal. A diferencia de los modelos autoasociativos (donde la entrada y la salida son idénticas), esta red configura una memoria heteroasociativa: asocia un estímulo de entrada con un patrón de respuesta totalmente diferente. El entrenamiento construye la matriz de memoria aplicando una regla de asociación lógica (similar a la regla de Hebb): la conexión sináptica entre una entrada y una salida se refuerza (se fija en 1) únicamente si ambos elementos están activos (igual a 1) al mismo tiempo en los datos de entrenamiento. En la etapa de recuperación, la red procesa cualquier estímulo calculando el producto punto entre la matriz de pesos memorizada y el vector de entrada, aplicando un umbral simple (mayor a cero) para detonar las neuronas de salida correspondientes.
@@ -326,7 +326,7 @@ Al ejecutar el código, la red crea exitosamente una matriz de conexiones direct
 
 La operación cruzada (producto punto) permite que el bit ruidoso (el último "1" en la entrada) sea multiplicado por los "0" en la última columna de la matriz de memoria, anulando su impacto y rescatando el patrón correcto a la perfección.
 
-** (11) Clasificador Carpenter / Grossberg (ART-1)**
+**(11) Clasificador Carpenter / Grossberg (ART-1)**
 
 **Explicación del Código Fuente**
 El algoritmo implementa una versión simplificada del clasificador de Carpenter y Grossberg (basado en la Teoría de Resonancia Adaptativa o ART), el cual está categorizado en los documentos como un modelo de red neuronal de aprendizaje no-supervisado para patrones fijos de entrada binaria. El núcleo del código gira en torno al parámetro de `vigilancia` (establecido en 0.6). Al recibir un patrón de entrada, la red calcula la similitud fraccional entre dicho patrón y las categorías (prototipos) ya existentes midiendo cuántos bits de valor "1" comparten (intersección). Si la similitud supera el umbral de vigilancia, el patrón se asigna a esa categoría y el prototipo se actualiza reteniendo únicamente los bits que ambos comparten (aprendizaje por intersección lógica). Si la similitud es baja y no supera la vigilancia en ninguna categoría, el algoritmo crea dinámicamente una nueva categoría. Este mecanismo resuelve el dilema de "plasticidad-estabilidad", permitiendo que la red aprenda nueva información sin corromper drásticamente las memorias previamente consolidadas.
@@ -355,7 +355,7 @@ Al procesar iterativamente los datos, la red categoriza y abstrae los prototipos
 
 La red determinó correctamente que existen 2 categorías subyacentes y extrajo la "esencia" (los bits estrictamente comunes) de cada grupo sin necesidad de supervisión externa.
 
-** (12) Clasificador Gausiano**
+**(12) Clasificador Gausiano**
 
 **Explicación del Código Fuente**
 El algoritmo implementa un Clasificador Gausiano, el cual se ubica teóricamente en la taxonomía de redes neuronales como un modelo de aprendizaje supervisado diseñado para la clasificación de patrones estáticos de entrada continua. El código se estructura en dos fases operativas. Durante el entrenamiento (supervisado), el algoritmo agrupa los datos de acuerdo con su clase y calcula estadísticos descriptivos fundamentales —la media y la varianza poblacional— para cada característica de los vectores de entrada. En la fase de inferencia o predicción (`predecir_gaussiano`), se emplea la función de densidad de probabilidad gaussiana (Campana de Gauss) para medir qué tan probable es observar el valor numérico del nuevo dato si este perteneciera a una clase determinada. Finalmente, el algoritmo asume independencia entre las características, multiplicando sus probabilidades individuales, y clasifica el nuevo patrón en la categoría que maximiza la probabilidad resultante.
@@ -380,7 +380,7 @@ Al ejecutar el código, la red calcula las distribuciones estadísticas con prec
 
 * **El clasificador Gausiano predice que es un:** **Perro******
 
-** (13) Clasificador Óptimo**
+**(13) Clasificador Óptimo**
 
 **Explicación del Código Fuente**
 El algoritmo implementa un Clasificador Óptimo, clasificado dentro de los modelos teóricos como una red de aprendizaje supervisado diseñada para procesar patrones de entrada binaria. A diferencia de los modelos geométricos, este código se basa en el teorema de Bayes para minimizar la probabilidad de error en la clasificación. En la fase de entrenamiento, el algoritmo calcula dos métricas estadísticas: las probabilidades a priori (la frecuencia general de aparición de cada clase en el conjunto de entrenamiento) y las probabilidades condicionales (la probabilidad de que un bit específico sea 1 dado que pertenece a una clase particular). Para evitar el problema de probabilidades condicionales absolutas de cero que anularían el producto estadístico final, el código aplica la técnica de suavizado de Laplace sumando 1 a los casos positivos y 2 al total de la clase. En la fase de predicción (`predecir_optimo`), el algoritmo asume independencia condicional entre los bits y multiplica la probabilidad a priori de cada clase por la probabilidad de los bits observados en el nuevo patrón.
