@@ -133,12 +133,38 @@ Restricción de Linealidad: Como todo modelo perceptivo de capa única, está li
 
 **(2) Perceptrón Simple (Algoritmo Perceptrónico)**
 
-El algoritmo implementa una red unicapa con aprendizaje supervisado, orientada específicamente a la resolución de problemas linealmente separables. El ciclo inicia estableciendo los pesos sinápticos en cero ($w_j = 0$) y definiendo una razón de aprendizaje constante de $\alpha = 0.5$. Por cada patrón de entrenamiento, la red calcula la suma ponderada de las entradas:$$y_{in} = \sum_{j=0}^{2} w_j x_j$$ Inmediatamente, se evalúa mediante una función de activación bipolar antisimétrica, la cual produce un 1 para valores positivos, -1 para negativos, o 0 (punto de indeterminación) si el valor es exactamente cero: $$y = \begin{cases} 1 & \text{si } y_{in} > 0 \\ 0 & \text{si } y_{in} = 0 \\ -1 & \text{si } y_{in} < 0 \end{cases}$$Si la salida calculada por la red ($y$) no coincide con la salida deseada ($d$), se activa un mecanismo de corrección que adapta las sinapsis sumando al peso actual una fracción proporcional al error y a la entrada:$$w_j(n+1) = w_j(n) + \alpha \cdot d \cdot x_j(n)$$El bucle de entrenamiento se detiene automáticamente en el momento en que los pesos logran procesar la totalidad del conjunto de datos sin cometer errores en una misma época.Datos de Trabajo
-El conjunto de datos representa la tabla de verdad de la compuerta lógica AND, pero codificada en formato bipolar (-1 para falso, 1 para verdadero). Cada vector de entrada tiene la estructura [x0, x1, x2], donde el primer elemento ($x_0$) es un $1$ constante que cumple la función de entrada para la neurona de inclinación (o bias), desplazando la frontera de decisión en el plano. El vector salidas_deseadas establece que la única condición verdadera (1) ocurre cuando tanto $x_1$ como $x_2$ son positivos.Salida Teórica Esperada
-Dado que la compuerta AND es un problema en el cual los puntos de una clase pueden separarse geométricamente de la otra mediante una línea recta, la teoría establece que el perceptrón debe alcanzar la convergencia. El algoritmo encontrará matemáticamente al menos un hiperplano (representado por los pesos finales) capaz de clasificar correctamente todas las entradas sin caer en un bucle infinito.Resultados de Ejecución Reales
-Al ejecutar este código, el perceptrón detecta los errores iniciales y modifica los pesos progresivamente. La convergencia se alcanza de manera exitosa en pocas épocas, y la prueba de eficiencia final corrobora que la frontera lineal ajustada discrimina los valores a la perfección:Entrada: [-1, -1] -> Salida de la red: -1Entrada: [-1, 1] -> Salida de la red: -1Entrada: [1, -1] -> Salida de la red: -1Entrada: [1, 1] -> Salida de la red: 1Análisis de Separabilidad Lineal
-El éxito en la convergencia del perceptrón demuestra empíricamente la separabilidad lineal del problema AND bipolar. La inclusión del término de sesgo (bias o $x_0$) resulta fundamental en este aspecto; al permitir que la frontera de decisión ($w_1 x_1 + w_2 x_2 + bias = 0$) no esté obligada a cruzar por el origen de coordenadas $(0,0)$, el algoritmo goza de los grados de libertad geométricos necesarios para trazar una recta óptima que aísla el único caso positivo $(1, 1)$ del resto de los patrones negativos.Análisis de Resultados y Limitaciones
-A diferencia de McCulloch-Pitts, el perceptrón supera la necesidad de establecer umbrales manuales gracias a su regla de aprendizaje, logrando adaptar sus pesos de forma autónoma basándose en la retroalimentación de sus propios errores. Sin embargo, comparte la misma limitación arquitectónica estructural: al ser una red de capa única, su capacidad de clasificación se circunscribe exclusivamente a problemas linealmente separables. Ante conjuntos de datos no lineales, como la función lógica XOR, el algoritmo iteraría indefinidamente sin lograr que el error llegue a cero, evidenciando la necesidad de implementar Perceptrones Multicapa (MLP) y algoritmos avanzados como Backpropagation para tareas de mayor complejidad geométrica.
+El algoritmo implementa una red unicapa con aprendizaje supervisado, orientada específicamente a la resolución de problemas linealmente separables. El ciclo inicia estableciendo los pesos sinápticos en cero ($w_j = 0$) y definiendo una razón de aprendizaje constante de $\alpha = 0.5$. Por cada patrón de entrenamiento, la red calcula la suma ponderada de las entradas:
+
+$$y_{in} = \sum_{j=0}^{2} w_j x_j$$
+
+Inmediatamente, se evalúa mediante una función de activación bipolar antisimétrica, la cual produce un 1 para valores positivos, -1 para negativos, o 0 (punto de indeterminación) si el valor es exactamente cero:
+
+$$y = \begin{cases} 1 & \text{si } y_{in} > 0 \\ 0 & \text{si } y_{in} = 0 \\ -1 & \text{si } y_{in} < 0 \end{cases}$$
+
+Si la salida calculada por la red ($y$) no coincide con la salida deseada ($d$), se activa un mecanismo de corrección que adapta las sinapsis sumando al peso actual una fracción proporcional al error y a la entrada:
+
+$$w_j(n+1) = w_j(n) + \alpha \cdot d \cdot x_j(n)$$
+
+El bucle de entrenamiento se detiene automáticamente en el momento en que los pesos logran procesar la totalidad del conjunto de datos sin cometer errores en una misma época.
+
+El conjunto de datos representa la tabla de verdad de la compuerta lógica AND, pero codificada en formato bipolar (-1 para falso, 1 para verdadero). Cada vector de entrada tiene la estructura [x0, x1, x2], donde el primer elemento ($x_0$) es un $1$ constante que cumple la función de entrada para la neurona de inclinación (o bias), desplazando la frontera de decisión en el plano. El vector salidas_deseadas establece que la única condición verdadera (1) ocurre cuando tanto $x_1$ como $x_2$ son positivos.
+
+Dado que la compuerta AND es un problema en el cual los puntos de una clase pueden separarse geométricamente de la otra mediante una línea recta, la teoría establece que el perceptrón debe alcanzar la convergencia. El algoritmo encontrará matemáticamente al menos un hiperplano (representado por los pesos finales) capaz de clasificar correctamente todas las entradas sin caer en un bucle infinito.
+
+Al ejecutar este código, el perceptrón detecta los errores iniciales y modifica los pesos progresivamente. La convergencia se alcanza de manera exitosa en pocas épocas, y la prueba de eficiencia final corrobora que la frontera lineal ajustada discrimina los valores a la perfección:
+
+Entrada: [-1, -1] -> Salida de la red: -1
+
+Entrada: [-1, 1] -> Salida de la red: -1
+
+Entrada: [1, -1] -> Salida de la red: -1
+
+Entrada: [1, 1] -> Salida de la red: 1
+
+Análisis de Separabilidad Lineal: El éxito en la convergencia del perceptrón demuestra empíricamente la separabilidad lineal del problema AND bipolar. La inclusión del término de sesgo (bias o $x_0$) resulta fundamental en este aspecto; al permitir que la frontera de decisión ($w_1 x_1 + w_2 x_2 + bias = 0$) no esté obligada a cruzar por el origen de coordenadas $(0,0)$, el algoritmo goza de los grados de libertad geométricos necesarios para trazar una recta óptima que aísla el único caso positivo $(1, 1)$ del resto de los patrones negativos.
+
+Análisis de Resultados y Limitaciones: A diferencia de McCulloch-Pitts, el perceptrón supera la necesidad de establecer umbrales manuales gracias a su regla de aprendizaje, logrando adaptar sus pesos de forma autónoma basándose en la retroalimentación de sus propios errores. Sin embargo, comparte la misma limitación arquitectónica estructural: al ser una red de capa única, su capacidad de clasificación se circunscribe exclusivamente a problemas linealmente separables. Ante conjuntos de datos no lineales, como la función lógica XOR, el algoritmo iteraría indefinidamente sin lograr que el error llegue a cero, evidenciando la necesidad de implementar Perceptrones Multicapa (MLP) y algoritmos avanzados como Backpropagation para tareas de mayor complejidad geométrica.
+
 
 **(3) ADALINE (Adaptive Linear Neuron)**
 
