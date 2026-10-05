@@ -77,24 +77,67 @@ Antes de continuar, vale la pena mencionar de que en el desarrollo de los algori
 
 **(1) Modelo de McCulloch-Pitts (Compuerta Lógica AND)**
 
-**Explicación del Código Fuente**
-El algoritmo implementa una función `mcculloch_pitts_and` que simula la unidad computacional neuronal más elemental utilizando neuronas de tipo binario. Se establecen dos parámetros estructurales que se mantienen fijos: los pesos sinápticos (`w1 = 1`, `w2 = 1`) y el nivel del umbral de activación (`umbral = 2`). La operación principal calcula la entrada total a la neurona mediante la suma ponderada de las señales (`y_in = (x1 * w1) + (x2 * w2)`). Inmediatamente después, esta suma se evalúa a través de una función de activación del tipo escalón. Si la suma ponderada es mayor o igual al umbral, la neurona dispara y retorna 1; en caso contrario, retorna 0. Al mantener los pesos y umbrales inmutables, este algoritmo no ejecuta ningún ciclo de aprendizaje.
+Explicación del Código Fuente
+El algoritmo implementa una función mcculloch_pitts_and que simula la unidad computacional neuronal más elemental utilizando neuronas de tipo binario. Se establecen dos parámetros estructurales que se mantienen fijos: los pesos sinápticos ($w_1 = 1$, $w_2 = 1$) y el nivel del umbral de activación ($\theta = 2$). La operación principal calcula la entrada total a la neurona mediante la suma ponderada de las señales:
 
-**Datos de Trabajo**
-El bloque opera sobre una lista de patrones discretos de entrada puramente binarios: `[(0, 0), (0, 1), (1, 0), (1, 1)]`. Estas tuplas representan exhaustivamente las cuatro combinaciones de estados posibles para las dos variables independientes de una compuerta lógica.
+$$y_{in} = \sum_{i=1}^{2} x_i w_i = (x_1 \cdot w_1) + (x_2 \cdot w_2)$$
 
-**Salida Teórica Esperada**
-De acuerdo con la tabla de verdad matemática para la función lógica AND, la neurona debe permanecer inactiva (salida 0) para las entradas `(0, 0)`, `(0, 1)` y `(1, 0)`. La salida teórica solo alcanza la activación (salida 1) en el escenario donde ambas entradas se disparan simultáneamente en `(1, 1)`.
+Inmediatamente después, esta suma se evalúa a través de una función de activación del tipo escalón:
 
-**Resultados de Ejecución Reales**
+$$y = \begin{cases} 1 & \text{si } y_{in} \geq \theta \\ 0 & \text{si } y_{in} < \theta \end{cases}$$
+
+Si la suma ponderada es mayor o igual al umbral, la neurona dispara y retorna 1; en caso contrario, retorna 0. Al mantener los pesos y umbrales inmutables, este algoritmo no ejecuta ningún ciclo de aprendizaje.
+
+Datos de Trabajo
+El bloque opera sobre una lista de patrones discretos de entrada puramente binarios: [(0, 0), (0, 1), (1, 0), (1, 1)]. Estas tuplas representan exhaustivamente las cuatro combinaciones de estados posibles para las dos variables independientes de una compuerta lógica.
+
+Salida Teórica Esperada
+De acuerdo con la tabla de verdad matemática para la función lógica AND, la neurona debe permanecer inactiva (salida 0) para las entradas (0, 0), (0, 1) y (1, 0). La salida teórica solo alcanza la activación (salida 1) en el escenario donde ambas entradas se disparan simultáneamente en (1, 1).
+
+Resultados de Ejecución Reales
 Al iterar la función sobre la lista de patrones, el algoritmo procesa la aritmética interna y devuelve exactamente la tabla de verdad esperada para la función AND:
 
-* **Entrada: (0, 0)** -> Salida de la neurona: **0** *(Suma ponderada de 0, no supera el umbral)*.
-* **Entrada: (0, 1)** -> Salida de la neurona: **0** *(Suma ponderada de 1, no supera el umbral)*.
-* **Entrada: (1, 0)** -> Salida de la neurona: **0** *(Suma ponderada de 1, no supera el umbral)*.
-* **Entrada: (1, 1)** -> Salida de la neurona: **1** *(Suma ponderada de 2, iguala el umbral)*.
+Entrada: (0, 0) -> Salida de la neurona: 0 (Suma ponderada de 0, no supera el umbral $\theta = 2$).
 
-El resultado confirma el principio del modelo: las funciones lógicas se pueden describir mediante combinaciones de estas neuronas binarias básicas.
+Entrada: (0, 1) -> Salida de la neurona: 0 (Suma ponderada de 1, no supera el umbral $\theta = 2$).
+
+Entrada: (1, 0) -> Salida de la neurona: 0 (Suma ponderada de 1, no supera el umbral $\theta = 2$).
+
+Entrada: (1, 1) -> Salida de la neurona: 1 (Suma ponderada de 2, iguala el umbral $\theta = 2$).
+
+Análisis de Separabilidad Lineal (AND)
+La capacidad del modelo para resolver la compuerta AND radica en que este es un problema linealmente separable. Geométricamente, la ecuación de la suma ponderada igualada al umbral ($w_1 x_1 + w_2 x_2 = \theta$) define una recta en un plano bidimensional. Al sustituir los valores ($1 \cdot x_1 + 1 \cdot x_2 = 2$, o bien $x_2 = -x_1 + 2$), obtenemos una frontera de decisión lineal que aísla perfectamente el caso de activación verdadera $(1, 1)$ del resto de las combinaciones nulas.
+
+(2) Modelo de McCulloch-Pitts (Compuerta Lógica OR)
+
+Explicación del Código Fuente
+La adaptación del modelo para la función OR requiere una modificación mínima pero fundamental en la función mcculloch_pitts_or: el umbral de activación se reduce ($\theta = 1$), manteniendo los pesos sinápticos idénticos al modelo anterior ($w_1 = 1$, $w_2 = 1$). Las ecuaciones matemáticas subyacentes de suma ponderada y activación escalón permanecen exactamente iguales. Al reducir el umbral, basta con que una sola de las entradas esté activa para que la suma ponderada iguale o supere la barrera de activación.
+
+Salida Teórica Esperada
+La tabla de verdad matemática para la función lógica OR dicta que la neurona debe activarse (salida 1) siempre que al menos una de las entradas sea 1. La salida teórica solo permanece inactiva (salida 0) en el escenario donde ambas entradas son nulas (0, 0).
+
+Resultados de Ejecución Reales
+La iteración sobre los mismos patrones de entrada confirma el comportamiento de la compuerta OR:
+
+Entrada: (0, 0) -> Salida de la neurona: 0 (Suma ponderada de 0, no supera el umbral $\theta = 1$).
+
+Entrada: (0, 1) -> Salida de la neurona: 1 (Suma ponderada de 1, iguala el umbral $\theta = 1$).
+
+Entrada: (1, 0) -> Salida de la neurona: 1 (Suma ponderada de 1, iguala el umbral $\theta = 1$).
+
+Entrada: (1, 1) -> Salida de la neurona: 1 (Suma ponderada de 2, supera el umbral $\theta = 1$).
+
+Análisis de Separabilidad Lineal (OR)
+Al igual que la compuerta AND, la función OR es linealmente separable. Al aplicar la ecuación del umbral ($1 \cdot x_1 + 1 \cdot x_2 = 1$, que se traduce en $x_2 = -x_1 + 1$), la frontera de decisión se desplaza hacia el origen. Esta nueva recta corta los ejes en $1$, aislando eficazmente el único punto de inactividad $(0, 0)$ de los tres puntos de activación $(0, 1), (1, 0)$ y $(1, 1)$.
+
+(3) Análisis de Resultados y Limitaciones del Modelo
+Las implementaciones conjuntas demuestran la viabilidad teórica y práctica de simular operaciones lógicas básicas mediante aritmética ponderada. Se validó con éxito que el simple ajuste manual del umbral de activación (de $\theta = 2$ a $\theta = 1$) es suficiente para alterar la función lógica de la neurona sin cambiar sus pesos sinápticos.
+
+Sin embargo, el modelo de McCulloch-Pitts presenta dos limitaciones críticas para arquitecturas computacionales modernas:
+
+Ausencia de Aprendizaje: Carece de un algoritmo heurístico; los parámetros ($w$ y $\theta$) no se ajustan ante el error, debiendo ser deducidos analíticamente e ingresados por el programador.
+
+Restricción de Linealidad: Como todo modelo perceptivo de capa única, está limitado a problemas estrictamente linealmente separables. Es estructuralmente incapaz de trazar fronteras de decisión para problemas no lineales (como la compuerta XOR) a menos que se integren arquitecturas multicapa.
 
 **(2) Perceptrón Simple (Algoritmo Perceptrónico)**
 
