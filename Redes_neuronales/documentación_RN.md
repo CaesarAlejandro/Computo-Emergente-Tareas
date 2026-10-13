@@ -133,6 +133,7 @@ Restricción de Linealidad: Como todo modelo perceptivo de capa única, está li
 
 **(2) Perceptrón Simple (Algoritmo Perceptrónico)**
 
+Explicación del Código Fuente
 El algoritmo implementa una red unicapa con aprendizaje supervisado, orientada específicamente a la resolución de problemas linealmente separables. El ciclo inicia estableciendo los pesos sinápticos en cero ($w_j = 0$) y definiendo una razón de aprendizaje constante de $\alpha = 0.5$. Por cada patrón de entrenamiento, la red calcula la suma ponderada de las entradas:
 
 $$y_{in} = \sum_{j=0}^{2} w_j x_j$$
@@ -147,10 +148,13 @@ $$w_j(n+1) = w_j(n) + \alpha \cdot d \cdot x_j(n)$$
 
 El bucle de entrenamiento se detiene automáticamente en el momento en que los pesos logran procesar la totalidad del conjunto de datos sin cometer errores en una misma época.
 
+Datos de Trabajo
 El conjunto de datos representa la tabla de verdad de la compuerta lógica AND, pero codificada en formato bipolar (-1 para falso, 1 para verdadero). Cada vector de entrada tiene la estructura [x0, x1, x2], donde el primer elemento ($x_0$) es un $1$ constante que cumple la función de entrada para la neurona de inclinación (o bias), desplazando la frontera de decisión en el plano. El vector salidas_deseadas establece que la única condición verdadera (1) ocurre cuando tanto $x_1$ como $x_2$ son positivos.
 
+Salida Teórica Esperada
 Dado que la compuerta AND es un problema en el cual los puntos de una clase pueden separarse geométricamente de la otra mediante una línea recta, la teoría establece que el perceptrón debe alcanzar la convergencia. El algoritmo encontrará matemáticamente al menos un hiperplano (representado por los pesos finales) capaz de clasificar correctamente todas las entradas sin caer en un bucle infinito.
 
+Resultados de Ejecución Reales
 Al ejecutar este código, el perceptrón detecta los errores iniciales y modifica los pesos progresivamente. La convergencia se alcanza de manera exitosa en pocas épocas, y la prueba de eficiencia final corrobora que la frontera lineal ajustada discrimina los valores a la perfección:
 
 Entrada: [-1, -1] -> Salida de la red: -1
@@ -161,29 +165,53 @@ Entrada: [1, -1] -> Salida de la red: -1
 
 Entrada: [1, 1] -> Salida de la red: 1
 
-Análisis de Separabilidad Lineal: El éxito en la convergencia del perceptrón demuestra empíricamente la separabilidad lineal del problema AND bipolar. La inclusión del término de sesgo (bias o $x_0$) resulta fundamental en este aspecto; al permitir que la frontera de decisión ($w_1 x_1 + w_2 x_2 + bias = 0$) no esté obligada a cruzar por el origen de coordenadas $(0,0)$, el algoritmo goza de los grados de libertad geométricos necesarios para trazar una recta óptima que aísla el único caso positivo $(1, 1)$ del resto de los patrones negativos.
+Análisis de Separabilidad Lineal
+El éxito en la convergencia del perceptrón demuestra empíricamente la separabilidad lineal del problema AND bipolar. La inclusión del término de sesgo (bias o $x_0$) resulta fundamental en este aspecto; al permitir que la frontera de decisión ($w_1 x_1 + w_2 x_2 + bias = 0$) no esté obligada a cruzar por el origen de coordenadas $(0,0)$, el algoritmo goza de los grados de libertad geométricos necesarios para trazar una recta óptima que aísla el único caso positivo $(1, 1)$ del resto de los patrones negativos.
 
-Análisis de Resultados y Limitaciones: A diferencia de McCulloch-Pitts, el perceptrón supera la necesidad de establecer umbrales manuales gracias a su regla de aprendizaje, logrando adaptar sus pesos de forma autónoma basándose en la retroalimentación de sus propios errores. Sin embargo, comparte la misma limitación arquitectónica estructural: al ser una red de capa única, su capacidad de clasificación se circunscribe exclusivamente a problemas linealmente separables. Ante conjuntos de datos no lineales, como la función lógica XOR, el algoritmo iteraría indefinidamente sin lograr que el error llegue a cero, evidenciando la necesidad de implementar Perceptrones Multicapa (MLP) y algoritmos avanzados como Backpropagation para tareas de mayor complejidad geométrica.
+Análisis de Resultados y Limitaciones
+A diferencia de McCulloch-Pitts, el perceptrón supera la necesidad de establecer umbrales manuales gracias a su regla de aprendizaje, logrando adaptar sus pesos de forma autónoma basándose en la retroalimentación de sus propios errores. Sin embargo, comparte la misma limitación arquitectónica estructural: al ser una red de capa única, su capacidad de clasificación se circunscribe exclusivamente a problemas linealmente separables. Ante conjuntos de datos no lineales, como la función lógica XOR, el algoritmo iteraría indefinidamente sin lograr que el error llegue a cero, evidenciando la necesidad de implementar Perceptrones Multicapa (MLP) y algoritmos avanzados como Backpropagation para tareas de mayor complejidad geométrica.
 
+**(3) Implementación del Modelo ADALINE (Regla Delta)**
 
-**(3) ADALINE (Adaptive Linear Neuron)**
+### Descripción Computacional y Matemática
+El algoritmo implementa una red neuronal de tipo ADALINE, una estructura propuesta por Widrow y Hoff que funciona como un combinador lineal adaptativo. A diferencia del perceptrón simple, el aprendizaje en la red ADALINE utiliza la salida real continua calculada por la red, sin someterla previamente a una función umbral o escalón. La salida de la red se define matemáticamente como la suma ponderada de sus entradas:
 
-**Explicación del Código Fuente**
-El algoritmo implementa una red neuronal de tipo ADALINE, una estructura propuesta por Widrow y Hoff que funciona como un combinador lineal adaptativo. A diferencia del perceptrón simple, el aprendizaje en la red ADALINE utiliza la salida real continua calculada por la red, sin pasarla previamente por una función umbral o escalón. Los pesos sinápticos se inicializan de manera aleatoria con valores entre 0 y 1. Durante las épocas de entrenamiento, el algoritmo calcula el error iterativamente tomando la diferencia directa entre el valor real producido en la salida y la salida esperada ($d - y$). Para minimizar el error cuadrático medio para todos los patrones de aprendizaje, los pesos se actualizan usando la regla Delta, basada en el método del descenso del gradiente. Cada peso se modifica proporcionalmente al error, a la entrada correspondiente y a la tasa de aprendizaje.
+$$y = \sum_{j=0}^{n} w_j x_j$$
 
-**Datos de Trabajo**
-El conjunto de datos está diseñado para resolver un problema de descodificador de binario a decimal utilizando patrones de entrenamiento de dimensión 3. La matriz de `entradas` contiene el número máximo de combinaciones posibles para 3 bits ($2^3 = 8$). Cada vector de entrada está precedido por un valor de `1` fijo, que cumple la función de señal de entrada para el parámetro del umbral (bias). Las `salidas_deseadas` contienen los valores escalares decimales del 0 al 7, que corresponden a la traducción exacta de cada número binario.
+Los pesos sinápticos se inicializan de manera aleatoria con valores entre 0 y 1. Durante las épocas de entrenamiento, el algoritmo calcula el error de forma iterativa tomando la diferencia directa entre el valor deseado y la salida real continua:
 
-**Salida Teórica Esperada**
-Teóricamente, existe una expresión matemática analítica capaz de realizar la descodificación de binario a decimal mediante una suma ponderada lineal. Dado que las salidas del problema son una función estrictamente lineal de las entradas, el modelo ADALINE es capaz de aproximar esta expresión por sí solo. Se espera que el algoritmo ajuste iterativamente sus pesos hasta que el error cuadrático total tienda a cero, encontrando una configuración de parámetros óptima.
+$$e = d - y$$
 
-**Resultados de Ejecución Reales**
-Al ejecutar el código, la medida del error cuadrático medio cae drásticamente durante las 150 épocas a medida que el descenso del gradiente ajusta la superficie del error. Al finalizar, la red arroja pesos óptimos muy cercanos a los valores teóricos de la base binaria (`[0.0, 4.0, 2.0, 1.0]`). En la prueba de eficiencia, la predicción continua (lineal) de la red acierta con altísima precisión:
+Para evaluar el rendimiento general del modelo, se calcula el Error Cuadrático Medio (MSE) sobre todo el conjunto de patrones:
 
-* Entrada Binaria: `[0, 0, 0]` -> Decimal Esperado: **0** | Predicción Red: **~0.00**
-* Entrada Binaria: `[0, 1, 0]` -> Decimal Esperado: **2** | Predicción Red: **~2.00**
-* Entrada Binaria: `[1, 0, 1]` -> Decimal Esperado: **5** | Predicción Red: **~5.00**
-* Entrada Binaria: `[1, 1, 1]` -> Decimal Esperado: **7** | Predicción Red: **~7.00**
+$$MSE = \frac{1}{N} \sum_{i=1}^{N} \frac{1}{2} (d_i - y_i)^2$$
+
+Con el objetivo de minimizar esta superficie de error, los pesos se actualizan utilizando la **Regla Delta**, basada en el método del descenso del gradiente. Cada peso se modifica de manera estrictamente proporcional al error, a la entrada correspondiente y a una tasa de aprendizaje constante ($\alpha$):
+
+$$w_j(t+1) = w_j(t) + \alpha \cdot e \cdot x_j$$
+
+### Datos de Trabajo y Definición de Patrones
+El conjunto de datos está diseñado para resolver un problema de descodificador de binario a decimal utilizando patrones de entrenamiento de dimensión 3. La matriz de entradas contiene el número máximo de combinaciones posibles para 3 bits ($2^3 = 8$). 
+
+Cada vector de entrada está precedido por un valor de `1` fijo, que cumple la función de señal de entrada para el parámetro del umbral (bias). Las salidas deseadas contienen los valores escalares decimales del 0 al 7, que corresponden a la traducción exacta de cada respectivo número binario.
+
+### Salida Teórica Esperada
+Teóricamente, existe una expresión matemática analítica capaz de realizar la descodificación de binario a decimal mediante una suma ponderada lineal. Dado que las salidas del problema son una función estrictamente lineal de las entradas, el modelo ADALINE es capaz de aproximar esta expresión de forma autónoma. Se espera que el algoritmo ajuste iterativamente sus pesos hasta que el error cuadrático total tienda a cero, encontrando una configuración de parámetros globalmente óptima.
+
+### Resultados y Evolución del Error
+Al ejecutar el código, se graficó la curva de aprendizaje (MSE vs. Épocas), evidenciando que la medida del error cuadrático medio cae de manera exponencial durante las primeras iteraciones a medida que el descenso del gradiente ajusta los parámetros, estabilizándose cerca de cero mucho antes de alcanzar las 150 épocas máximas. 
+
+Al finalizar, la red arroja pesos óptimos que convergen a los valores teóricos esperados: `[0.0, 4.0, 2.0, 1.0]`. En la prueba de eficiencia final, la predicción continua de la red acierta con una precisión absoluta:
+* **Entrada Binaria:** `[0, 0, 0]` -> **Decimal Esperado:** 0 | **Predicción Red:** ~0.00
+* **Entrada Binaria:** `[0, 1, 0]` -> **Decimal Esperado:** 2 | **Predicción Red:** ~2.00
+* **Entrada Binaria:** `[1, 0, 1]` -> **Decimal Esperado:** 5 | **Predicción Red:** ~5.00
+* **Entrada Binaria:** `[1, 1, 1]` -> **Decimal Esperado:** 7 | **Predicción Red:** ~7.00
+
+### Conclusiones
+Los resultados demuestran la eficacia de la regla Delta para la optimización de pesos en problemas de naturaleza continua. El problema de conversión de base binaria a base decimal es, por definición analítica, una combinación puramente lineal donde cada posición de bit representa una potencia de 2 ($2^2=4$, $2^1=2$, $2^0=1$). 
+
+El modelo ADALINE demostró ser la arquitectura idónea para este problema. Al analizar los pesos finales obtenidos (`w1=4.0`, `w2=2.0`, `w3=1.0`, con un `bias=0.0`), se concluye que la red neuronal no se limitó simplemente a memorizar o clasificar los patrones, sino que logró deducir de forma autónoma la función matemática subyacente (las potencias de la base 2) que rige el sistema de numeración binario.
+
 
 **(4) Perceptrón Multicapa con Retropropagación (Backpropagation)**
 
