@@ -1,26 +1,4 @@
 
-
-**(4) Perceptrón Multicapa con Retropropagación (Backpropagation)**
-
-**Explicación del Código Fuente**
-El algoritmo implementa un perceptrón multicapa, una arquitectura propuesta originalmente en 1986 para solventar las limitaciones de no linealidad que presentaba el perceptrón simple. La red organiza sus unidades de procesamiento en tres niveles: una capa de entrada (2 variables), una capa oculta intermedia (2 neuronas) y una capa de salida (1 neurona). Para procesar la información, el modelo utiliza una función de activación sigmoidal $f(x) = \frac{1}{1+e^{-x}}$, la cual es estrictamente derivable y proporciona una salida en el intervalo continuo de $[0, +1]$.
-
-El núcleo del código es el algoritmo de retropropagación (back-propagation), que plantea el aprendizaje como un problema de optimización no lineal para minimizar la función del error cuadrático medio mediante el método del descenso del gradiente. En cada época, el algoritmo ejecuta un paso hacia adelante (feedforward) para calcular las activaciones, evalúa el error producido frente a la salida deseada y, posteriormente, propaga los errores cometidos en la capa de salida hacia atrás (hacia las neuronas de la capa oculta). Usando la regla de la cadena, calcula las derivadas parciales y actualiza todos los pesos ($w$) y umbrales ($u, v$) restando una fracción de dicho gradiente multiplicada por la razón de aprendizaje ($\alpha = 0.5$).
-
-**Datos de Trabajo**
-El bloque opera sobre la tabla de verdad discreta de la compuerta lógica XOR (O exclusivo), representada por los vectores de entrada `[[0, 0], [0, 1], [1, 0], [1, 1]]` y el vector objetivo `[0, 1, 1, 0]`. A diferencia de las funciones AND y OR, la compuerta XOR genera un patrón espacial que es imposible de separar mediante una única línea recta en un plano cartesiano, lo que lo convierte en el ejemplo clásico de un problema no linealmente separable.
-
-**Salida Teórica Esperada**
-Las redes multicapa poseen la capacidad matemática y geométrica para llevar a cabo clasificaciones generales más allá de fronteras lineales, logrando subdividir el espacio combinando múltiples polígonos convexos o regiones cerradas. Teóricamente, el algoritmo de retropropagación ajustará iterativamente los parámetros de las neuronas ocultas hasta descender por la hipersuperficie del error y alcanzar un mínimo (ya sea local o global). Al converger, la red debe ser capaz de emitir valores reales extremadamente cercanos a 0 para las clases falsas y cercanos a 1 para las verdaderas.
-
-**Resultados de Ejecución Reales**
-Al ejecutar este bucle iterativo, se observa cómo el parámetro del error total va decayendo época tras época, demostrando que la red desciende exitosamente por el gradiente. Al término de las 5000 épocas, las funciones sigmoidales arrojan números continuos que, al ser redondeados, resuelven la compuerta XOR con exactitud:
-
-* Entrada: `[0, 0]` -> Esperado: **0** | Red: **~0.015** *(Clase: 0)*
-* Entrada: `[0, 1]` -> Esperado: **1** | Red: **~0.981** *(Clase: 1)*
-* Entrada: `[1, 0]` -> Esperado: **1** | Red: **~0.981** *(Clase: 1)*
-* Entrada: `[1, 1]` -> Esperado: **0** | Red: **~0.023** *(Clase: 0)*
-
 **(5) Red de Hopfield (Memoria Asociativa)**
 
 **Explicación del Código Fuente**
