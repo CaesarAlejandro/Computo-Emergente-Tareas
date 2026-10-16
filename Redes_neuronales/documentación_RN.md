@@ -91,37 +91,7 @@ Al evaluar el código con los puntos de prueba, el algoritmo rastrea, ordena y e
 
 En el tercer caso, aunque el punto está en el centro, la cercanía milimétrica de dos de los puntos más extremos de la Clase A supera la influencia del único punto cercano de la Clase B, dándole la victoria por 2 votos contra 1.
 
-**(8) Mapas de Kohonen (SOM - Self-Organizing Maps)**
 
-**Explicación del Código Fuente**
-El algoritmo implementa un Mapa de Kohonen, clasificado estructuralmente como un modelo de red neuronal de entrada continua entrenado sin supervisión. La arquitectura define una capa de tres neuronas, cada una con un vector de pesos de tres dimensiones inicializado aleatoriamente con valores entre 0 y 1. El proceso de aprendizaje se basa en un paradigma competitivo: al presentar un patrón de entrada, la red calcula la distancia euclidiana entre dicho patrón y los pesos de todas las neuronas. La neurona con la menor distancia resulta "ganadora" (`indice_ganadora`). En la fase de adaptación, únicamente los pesos de la neurona ganadora se modifican, desplazándose geométricamente hacia el vector de entrada en una proporción dictada por la `tasa_aprendizaje`. Para garantizar la estabilidad y convergencia del modelo, la tasa de aprendizaje decae exponencialmente (`*= 0.95`) al final de cada época, simulando la cristalización del mapa topológico.
-
-**Datos de Trabajo**
-El bloque opera sobre una lista bidimensional de entradas continuas (`datos_entrada`). Estos vectores de tres dimensiones representan normalizaciones de colores en el espectro RGB. Los datos han sido seleccionados para contener tres agrupaciones implícitas: tonos rojos (`[1.0, 0.0, 0.0]`, `[0.9, 0.1, 0.0]`), tonos azules (`[0.0, 0.0, 1.0]`, `[0.0, 0.1, 0.9]`), y tonos oscuros o grises (`[0.1, 0.1, 0.1]`, `[0.2, 0.2, 0.2]`). Al ser un entrenamiento sin supervisión, a la red no se le entrega ninguna etiqueta o información relacionada con la clase correcta de estos colores.
-
-**Salida Teórica Esperada**
-Dado que las redes de Kohonen son usadas como vectores para formar clústeres, la teoría dicta que las neuronas competirán por representar las regiones más densas del espacio de entrada. Se espera que, a lo largo de las 100 épocas, los pesos iniciales aleatorios se "auto-organicen" gravitando hacia el centro geométrico de cada uno de los tres grupos de colores. En la prueba de eficiencia, el modelo debe clasificar consistentemente cada par de colores similares bajo el identificador de una misma neurona ganadora.
-
-**Resultados de Ejecución Reales**
-Al ejecutar este código, las neuronas se desplazan rápidamente desde sus posiciones aleatorias hacia los focos de datos. El decaimiento de la tasa de aprendizaje estabiliza los pesos, arrojando vectores que promedian perfectamente cada categoría:
-
-* **Pesos finales de las neuronas (Centroides descubiertos):**
-* Neurona 0: `[0.0, 0.05, 0.95]` *(Especializada en Azules)*
-* Neurona 1: `[0.95, 0.05, 0.0]` *(Especializada en Rojos)*
-* Neurona 2: `[0.15, 0.15, 0.15]` *(Especializada en Grises)*
-
-
-* **Prueba de eficiencia (Asignación de categorías):**
-* Color de entrada `[1.0, 0.0, 0.0]` -> Clasificado en Neurona **1**
-* Color de entrada `[0.9, 0.1, 0.0]` -> Clasificado en Neurona **1**
-* Color de entrada `[0.0, 0.0, 1.0]` -> Clasificado en Neurona **0**
-* Color de entrada `[0.0, 0.1, 0.9]` -> Clasificado en Neurona **0**
-* Color de entrada `[0.1, 0.1, 0.1]` -> Clasificado en Neurona **2**
-* Color de entrada `[0.2, 0.2, 0.2]` -> Clasificado en Neurona **2**
-
-
-
-El algoritmo descubre con éxito las tres agrupaciones subyacentes, auto-organizando sus parámetros internos exclusivamente a partir de la geometría de los datos proporcionados.
 
 **(9) Red de Hamming**
 
